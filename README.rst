@@ -349,6 +349,9 @@ Assuming you have ``>=python3.7`` installed, navigate to the directory where you
     pip install -r requirements-dev.txt &&
     python -m unittest
 
+    python3 -m build
+    python3 -m twine upload --repository pypi dist/*
+
 In case you want to run a single unittest for a newly developed scraper
 
 .. code:: shell

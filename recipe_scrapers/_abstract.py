@@ -31,6 +31,7 @@ class AbstractScraper:
         ] = None,  # allows us to specify optional timeout for request
         wild_mode: Optional[bool] = False,
         html: Union[str, bytes, None] = None,
+        allow_redirects: Optional[bool] = True,
     ):
         if html:
             self.page_data = html
@@ -42,6 +43,7 @@ class AbstractScraper:
                 headers=HEADERS,
                 proxies=proxies,
                 timeout=timeout,
+                allow_redirects=allow_redirects,
             )
             self.page_data = resp.content
             self.url = resp.url

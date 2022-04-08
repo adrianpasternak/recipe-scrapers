@@ -77,7 +77,10 @@ class SchemaOrg:
         return self.data.get("inLanguage") or self.data.get("language")
 
     def title(self):
-        return normalize_string(self.data.get("name"))
+        name = self.data.get("name")
+        if isinstance(name, list):
+            name = name[0]
+        return normalize_string(name)
 
     def category(self):
         category = self.data.get("recipeCategory")
