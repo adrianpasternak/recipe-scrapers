@@ -347,10 +347,11 @@ Assuming you have ``>=python3.7`` installed, navigate to the directory where you
     python3 -m venv .venv &&
     source .venv/bin/activate &&
     pip install -r requirements-dev.txt &&
+    python -m pip install --upgrade build twine
     python -m unittest
 
-    python3 -m build
-    python3 -m twine upload --repository pypi dist/*
+    python -m build
+    python -m twine upload --repository pypi dist/*
 
 In case you want to run a single unittest for a newly developed scraper
 
