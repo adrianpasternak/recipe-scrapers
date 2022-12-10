@@ -38,15 +38,15 @@ class AbstractScraper:
             self.url = url
         else:
             assert url is not None, "url required for fetching recipe data"
-            resp = requests.get(
+            self.resp = requests.get(
                 url,
                 headers=HEADERS,
                 proxies=proxies,
                 timeout=timeout,
                 allow_redirects=allow_redirects,
             )
-            self.page_data = resp.content
-            self.url = resp.url
+            self.page_data = self.resp.content
+            self.url = self.resp.url
 
         self.wild_mode = wild_mode
         self.soup = BeautifulSoup(self.page_data, "html.parser")
