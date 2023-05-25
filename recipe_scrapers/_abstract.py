@@ -32,6 +32,7 @@ class AbstractScraper:
         wild_mode: Optional[bool] = False,
         html: Union[str, bytes, None] = None,
         allow_redirects: Optional[bool] = True,
+        headers: Dict[str, str] = None
     ):
         if html:
             self.page_data = html
@@ -40,7 +41,7 @@ class AbstractScraper:
             assert url is not None, "url required for fetching recipe data"
             self.resp = requests.get(
                 url,
-                headers=HEADERS,
+                headers=headers if headers is not None else HEADERS,
                 proxies=proxies,
                 timeout=timeout,
                 allow_redirects=allow_redirects,
