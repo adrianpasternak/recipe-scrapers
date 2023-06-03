@@ -7,7 +7,9 @@ from ._abstract import AbstractScraper
 class OneHundredOneCookBooks(AbstractScraper):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.soup = self.soup.find("div", id="recipe")
+        recipe = self.soup.find("div", id="recipe")
+        if recipe is not None:
+            self.soup = recipe
 
     @classmethod
     def host(cls):
@@ -31,13 +33,20 @@ class OneHundredOneCookBooks(AbstractScraper):
         return self.schema.image()
 
     def ingredients(self):
-        ingredients = self.soup.find("blockquote").p.stripped_strings
-        return list(ingredients)
+        bq = self.soup.find("blockquote")
+        if bq is not None:
+            ingredients = bq.p.stripped_strings
+            return list(ingredients)
+        return None
 
     def instructions(self):
-        return self.soup.find_all("p", limit=2, recursive=False)[1].get_text(
-            "\n", strip=True
-        )
+        find_all = self.soup.find_all("p", limit=2, recursive=False)
+        if (len(find_all) > 1):
+            return find_all[1].get_text(
+                "\n", strip=True
+            )
+        else:
+            return None
 
     def ratings(self):
         return None

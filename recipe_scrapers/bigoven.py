@@ -21,12 +21,16 @@ class BigOven(AbstractScraper):
         return self.schema.image()
 
     def ingredients(self):
-        rows = self.soup.find("ul", {"class": "ingredients-list"}).findAll("li")
-        return [
-            normalize_string(row.span.text)
-            for row in rows
-            if "ingHeading" not in row.span["class"]
-        ]
+        ig_list = self.soup.find("ul", {"class": "ingredients-list"})
+        if ig_list is not None:
+            rows = ig_list.findAll("li")
+            return [
+                normalize_string(row.span.text)
+                for row in rows
+                if "ingHeading" not in row.span["class"]
+            ]
+        else:
+            return None
 
     def instructions(self):
         ps = self.soup.find("div", {"class": "instructions"}).findAll("p")

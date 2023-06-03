@@ -138,16 +138,18 @@ def get_yields(element):
 
 def normalize_string(string):
     # Convert all named and numeric character references (e.g. &gt;, &#62;)
-    unescaped_string = html.unescape(string)
-    return re.sub(
-        r"\s+",
-        " ",
-        unescaped_string.replace("\xa0", " ")
-        .replace("\n", " ")  # &nbsp;
-        .replace("\t", " ")
-        .strip(),
-    )
-
+    if string is not None:
+        unescaped_string = html.unescape(string)
+        return re.sub(
+            r"\s+",
+            " ",
+            unescaped_string.replace("\xa0", " ")
+            .replace("\n", " ")  # &nbsp;
+            .replace("\t", " ")
+            .strip(),
+        )
+    else:
+        return None
 
 def url_path_to_dict(path):
     pattern = (

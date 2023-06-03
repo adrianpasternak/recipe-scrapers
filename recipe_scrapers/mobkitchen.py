@@ -16,9 +16,11 @@ class MobKitchen(AbstractScraper):
 
             if recipe_schema:
                 break
-
-        recipe_schema = json.loads(recipe_schema)
-        self.schema = SchemaOrg(recipe_schema, raw=True)
+        try:
+            recipe_schema = json.loads(recipe_schema)
+            self.schema = SchemaOrg(recipe_schema, raw=True)
+        except Exception as e:
+            pass
 
     @classmethod
     def host(cls, domain="mobkitchen.co.uk"):

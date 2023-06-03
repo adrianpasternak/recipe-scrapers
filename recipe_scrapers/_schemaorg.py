@@ -20,9 +20,12 @@ SYNTAXES = ["json-ld", "microdata"]
 class SchemaOrg:
     @staticmethod
     def _contains_schematype(item, schematype):
-        itemtype = item.get("@type", "")
-        itemtypes = itemtype if isinstance(itemtype, list) else [itemtype]
-        return schematype.lower() in "\n".join(itemtypes).lower()
+        if isinstance(item, dict):
+            itemtype = item.get("@type", "")
+            itemtypes = itemtype if isinstance(itemtype, list) else [itemtype]
+            return schematype.lower() in "\n".join(itemtypes).lower()
+        else:
+            return False
 
     def __init__(self, page_data, raw=False):
         if raw:

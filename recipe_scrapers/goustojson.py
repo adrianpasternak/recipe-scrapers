@@ -27,17 +27,26 @@ class GoustoJson(AbstractScraper):
         ).json()
 
         self.page_data = recipe_json.get("data")
-        self.data = self.page_data.get("entry")
+        if self.page_data is not None:
+            self.data = self.page_data.get("entry")
+        else:
+            self.data = None
 
     @classmethod
     def host(cls):
         return "gousto.co.uk"
 
     def title(self):
-        return self.data.get("title")
+        if self.data is not None:
+            return self.data.get("title")
+        else:
+            return None
 
     def total_time(self):
-        return get_minutes(sorted(self.data.get("prep_times").values())[-1])
+        if self.data is not None:
+            return get_minutes(sorted(self.data.get("prep_times").values())[-1])
+        else:
+            return None
 
     def yields(self):
         return get_yields(sorted(self.data.get("prep_times").keys())[-1])
@@ -46,20 +55,26 @@ class GoustoJson(AbstractScraper):
         return self.data.get("seo").get("open_graph_image")
 
     def ingredients(self):
-        return [
-            normalize_string(ingredient.get("label"))
-            for ingredient in self.data.get("ingredients")
-            if isinstance(ingredient, dict) and "label" in ingredient.keys()
-        ]
+        if self.data is not None:
+            return [
+                normalize_string(ingredient.get("label"))
+                for ingredient in self.data.get("ingredients")
+                if isinstance(ingredient, dict) and "label" in ingredient.keys()
+            ]
+        else:
+            return None
 
     def instructions(self):
-        return "\n".join(
-            [
-                normalize_string(instruction.get("instruction"))
-                for instruction in self.data.get("cooking_instructions")
-                if isinstance(instruction, dict) and "instruction" in instruction.keys()
-            ]
-        )
+        if self.data is not None:
+            return "\n".join(
+                [
+                    normalize_string(instruction.get("instruction"))
+                    for instruction in self.data.get("cooking_instructions")
+                    if isinstance(instruction, dict) and "instruction" in instruction.keys()
+                ]
+            )
+        else:
+            return None
 
     def ratings(self):
         return self.data.get("rating").get("average")

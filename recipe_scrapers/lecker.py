@@ -13,9 +13,10 @@ class Lecker(AbstractScraper):
         return self.schema.author()
 
     def title(self):
-        try:
-            return self.schema.title()
-        except TypeError:
+        title = self.schema.title()
+        if title is not None:
+            return title
+        else:
             return (
                 self.soup.find(
                     "header", {"class": "article-header article-header--article"}
