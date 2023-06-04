@@ -33,8 +33,12 @@ class BigOven(AbstractScraper):
             return None
 
     def instructions(self):
-        ps = self.soup.find("div", {"class": "instructions"}).findAll("p")
-        return "\n".join([normalize_string(p.text) for p in ps])
+        ins_list = self.soup.find("div", {"class": "instructions"})
+        if ins_list is not None:
+            ps = ins_list.findAll("p")
+            return "\n".join([normalize_string(p.text) for p in ps])
+        else:
+            return None
 
     def ratings(self):
         try:
